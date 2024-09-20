@@ -4,88 +4,124 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fruits Killer Spinner</title>
-    <style>body {
-        font-family: Arial, sans-serif;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        height: 100vh;
-        margin: 0;
-        background-color: #f9f9f9;
-    }
-    
-    .spinner-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-    
-    #spinner {
-        width: 300px;
-        height: 300px;
-        border-radius: 50%;
-        border: 5px solid #333;
-        position: relative;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-    
-    .segment {
-        position: absolute;
-        width: 50%;
-        height: 50%;
-        transform-origin: 100% 100%;
-        text-align: center;
-        padding-top: 15px;
-        font-size: 18px;
-        font-weight: bold;
-        color: #333;
-        border: 1px solid #fff;
-        box-sizing: border-box;
-    }
-    
-    .segment:nth-child(1) { transform: rotate(0deg); }
-    .segment:nth-child(2) { transform: rotate(45deg); }
-    .segment:nth-child(3) { transform: rotate(90deg); }
-    .segment:nth-child(4) { transform: rotate(135deg); }
-    .segment:nth-child(5) { transform: rotate(180deg); }
-    .segment:nth-child(6) { transform: rotate(225deg); }
-    .segment:nth-child(7) { transform: rotate(270deg); }
-    .segment:nth-child(8) { transform: rotate(315deg); }
-    
-    #spinButton {
-        margin-top: 20px;
-        padding: 10px 20px;
-        font-size: 16px;
-        font-weight: bold;
-        color: white;
-        background-color: #333;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-    
-    #spinButton:hover {
-        background-color: #555;
-    }
-    
-    .challenge-box {
-        margin-top: 20px;
-        font-size: 20px;
-        font-weight: bold;
-    }
-    
-    #score {
-        margin-top: 10px;
-        font-size: 18px;
-        font-weight: bold;
-    }
-    
-    #leaderboard {
-        margin-top: 10px;
-        font-size: 16px;
-    }
-    </style>
+    <style>/* General body styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        
+        /* Spinner container to center all elements */
+        .spinner-container {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 400px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Styling for the spinning wheel */
+        #spinner {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            border: 5px solid #333;
+            position: relative;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Individual segments in the spinner */
+        .segment {
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            transform-origin: 100% 100%;
+            text-align: center;
+            padding-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #fff;
+            border: 1px solid #fff;
+            box-sizing: border-box;
+            border-radius: 50%;
+        }
+        
+        /* Assigning rotation to each segment for the spinner */
+        .segment:nth-child(1) { transform: rotate(0deg); }
+        .segment:nth-child(2) { transform: rotate(45deg); }
+        .segment:nth-child(3) { transform: rotate(90deg); }
+        .segment:nth-child(4) { transform: rotate(135deg); }
+        .segment:nth-child(5) { transform: rotate(180deg); }
+        .segment:nth-child(6) { transform: rotate(225deg); }
+        .segment:nth-child(7) { transform: rotate(270deg); }
+        .segment:nth-child(8) { transform: rotate(315deg); }
+        
+        /* Styling the spin button */
+        #spinButton {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            background-color: #333;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        #spinButton:hover {
+            background-color: #555;
+        }
+        
+        /* Challenge display box styling */
+        .challenge-box {
+            margin-top: 20px;
+            padding: 10px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            background-color: #f0f8ff;
+            border-radius: 5px;
+            width: 80%;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Score box styling */
+        #score {
+            margin-top: 15px;
+            font-size: 22px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        /* Leaderboard styling */
+        #leaderboard {
+            margin-top: 20px;
+            padding: 10px;
+            font-size: 18px;
+            background-color: #ffecb3;
+            color: #333;
+            border-radius: 5px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            text-align: left;
+        }
+        
+        /* Styling for leaderboard entries */
+        #leaderboard div {
+            padding: 5px 0;
+            font-size: 16px;
+        }
+        </style>
 </head>
 <body>
     <div class="spinner-container">
@@ -102,13 +138,15 @@
         <button id="spinButton">SPIN</button>
         <div id="challenge" class="challenge-box"></div>
         <div id="score">Score: 0</div>
-        <div id="leaderboard">Leaderboard: <br> Coming Soon</div>
+        <div id="leaderboard">Leaderboard:</div>
     </div>
 
     <script>const spinner = document.getElementById('spinner');
         const spinButton = document.getElementById('spinButton');
         const challengeBox = document.getElementById('challenge');
         const scoreBox = document.getElementById('score');
+        const leaderboardBox = document.getElementById('leaderboard');
+        
         let score = 0;
         
         const fruits = [
@@ -122,6 +160,9 @@
             { name: 'Orange', challenge: 'Trivia: Which vitamin is most common in oranges?', points: 40, taskType: 'trivia' }
         ];
         
+        // Initial leaderboard update
+        updateLeaderboard();
+        
         spinButton.addEventListener('click', () => {
             const randomDeg = Math.floor(Math.random() * 3600) + 360; // Random degree for the spin
             spinner.style.transition = 'transform 4s ease-out';
@@ -131,14 +172,31 @@
             spinButton.disabled = true;
         
             setTimeout(() => {
-                // Determine the landed fruit
-                const index = Math.floor((randomDeg % 360) / 45);
-                const selectedFruit = fruits[index];
-                displayChallenge(selectedFruit);
                 // Re-enable button after spinning
                 spinButton.disabled = false;
+        
+                // Determine the landed fruit using modulus 360
+                const normalizedDeg = randomDeg % 360;
+                const index = getFruitIndex(normalizedDeg);
+                const selectedFruit = fruits[index];
+        
+                // Display the challenge and handle points
+                displayChallenge(selectedFruit);
+        
             }, 4000);
         });
+        
+        // Function to map the angle to the fruit index
+        function getFruitIndex(degree) {
+            if (degree >= 0 && degree < 45) return 7;      // Orange
+            if (degree >= 45 && degree < 90) return 6;     // Mangoes
+            if (degree >= 90 && degree < 135) return 5;    // Grapes
+            if (degree >= 135 && degree < 180) return 4;   // Apple
+            if (degree >= 180 && degree < 225) return 3;   // Pineapple
+            if (degree >= 225 && degree < 270) return 2;   // Gooseberry
+            if (degree >= 270 && degree < 315) return 1;   // Fig
+            if (degree >= 315 && degree < 360) return 0;   // Banana
+        }
         
         function displayChallenge(fruit) {
             if (fruit.taskType === 'powerup') {
@@ -149,7 +207,27 @@
                 score += fruit.points;
             }
             scoreBox.innerHTML = `Score: ${score}`;
+            saveScore();
+            updateLeaderboard();
         }
+        
+        function saveScore() {
+            let leaderboard = JSON.parse(localStorage.getItem('leaderboard')) || [];
+            leaderboard.push(score);
+            // Sort leaderboard in descending order and keep the top 5 scores
+            leaderboard.sort((a, b) => b - a);
+            leaderboard = leaderboard.slice(0, 5);
+            localStorage.setItem('leaderboard', JSON.stringify(leaderboard));
+        }
+        
+        function updateLeaderboard() {
+            const leaderboard = JSON.parse(localStorage.getItem('leaderboard')) || [];
+            leaderboardBox.innerHTML = 'Leaderboard:<br>';
+            leaderboard.forEach((score, index) => {
+                leaderboardBox.innerHTML += `${index + 1}. ${score} points<br>`;
+            });
+        }
+        
         </script>
 </body>
 </html>
