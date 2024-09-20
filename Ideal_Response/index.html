@@ -42,55 +42,15 @@
             border: 2px solid #fff;
         }
 
-        #banana {
-            background-color: #4CAF50;
-            transform: rotate(0deg) skewY(-45deg);
-            transform-origin: 100% 100%;
-        }
+        #banana { background-color: #4CAF50; transform: rotate(0deg) skewY(-45deg); transform-origin: 100% 100%; }
+        #fig { background-color: #8BC34A; transform: rotate(45deg) skewY(-45deg); transform-origin: 100% 100%; }
+        #gooseberry { background-color: #FFEB3B; transform: rotate(90deg) skewY(-45deg); transform-origin: 100% 100%; }
+        #pineapple { background-color: #FFC107; transform: rotate(135deg) skewY(-45deg); transform-origin: 100% 100%; }
+        #apple { background-color: #FF5722; transform: rotate(180deg) skewY(-45deg); transform-origin: 100% 100%; }
+        #grapes { background-color: #9C27B0; transform: rotate(225deg) skewY(-45deg); transform-origin: 100% 100%; }
+        #mangoes { background-color: #FF9800; transform: rotate(270deg) skewY(-45deg); transform-origin: 100% 100%; }
+        #orange { background-color: #FF5722; transform: rotate(315deg) skewY(-45deg); transform-origin: 100% 100%; }
 
-        #fig {
-            background-color: #8BC34A;
-            transform: rotate(45deg) skewY(-45deg);
-            transform-origin: 100% 100%;
-        }
-
-        #gooseberry {
-            background-color: #FFEB3B;
-            transform: rotate(90deg) skewY(-45deg);
-            transform-origin: 100% 100%;
-        }
-
-        #pineapple {
-            background-color: #FFC107;
-            transform: rotate(135deg) skewY(-45deg);
-            transform-origin: 100% 100%;
-        }
-
-        #apple {
-            background-color: #FF5722;
-            transform: rotate(180deg) skewY(-45deg);
-            transform-origin: 100% 100%;
-        }
-
-        #grapes {
-            background-color: #9C27B0;
-            transform: rotate(225deg) skewY(-45deg);
-            transform-origin: 100% 100%;
-        }
-
-        #mangoes {
-            background-color: #FF9800;
-            transform: rotate(270deg) skewY(-45deg);
-            transform-origin: 100% 100%;
-        }
-
-        #orange {
-            background-color: #FF5722;
-            transform: rotate(315deg) skewY(-45deg);
-            transform-origin: 100% 100%;
-        }
-
-        /* Styling for the Spin button */
         #spinButton {
             margin-top: 20px;
             padding: 10px 20px;
@@ -98,24 +58,20 @@
             cursor: pointer;
         }
 
-        /* Styling for highlighting the selected fruit */
         .selected {
-            background-color: #ffeb3b;  /* Yellow color to highlight */
-            box-shadow: 0px 0px 10px 5px rgba(255, 235, 59, 0.75); /* Glow effect */
-            color: #333; /* Darker text for better readability on highlight */
+            background-color: #ffeb3b;
+            box-shadow: 0px 0px 10px 5px rgba(255, 235, 59, 0.75);
+            color: #333;
             font-size: 20px;
         }
 
-        /* Add margin below the spinner */
         #spinnerContainer {
-            margin-bottom: 40px; /* Add space between spinner and leaderboard */
+            margin-bottom: 40px;
         }
 
-        /* Style for leaderboard */
         #leaderboard {
             margin-top: 20px;
         }
-
     </style>
 </head>
 <body>
@@ -145,7 +101,7 @@
         const leaderboardBox = document.getElementById('leaderboard');
         const segments = document.querySelectorAll('.segment');
 
-        let score = 0;
+        let score = 0; // Reset score for each spin
 
         const fruits = [
             { name: 'Banana', challenge: 'Solve this math problem: 12 + 8', points: 50, taskType: 'math' },
@@ -195,12 +151,12 @@
         }
 
         function displayChallenge(fruit) {
+            score = fruit.points; // Set score based only on the landed fruit
             if (fruit.taskType === 'powerup') {
-                score *= 2;
+                score *= 2; // Double the score for powerup
                 challengeBox.innerHTML = `You landed on ${fruit.name}! ${fruit.challenge}`;
             } else {
                 challengeBox.innerHTML = `You landed on ${fruit.name}! ${fruit.challenge}`;
-                score += fruit.points;
             }
             scoreBox.innerHTML = `Score: ${score}`;
             saveScore();
