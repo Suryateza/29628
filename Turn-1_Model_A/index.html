@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Fruits Killer Spinner</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+<style>
+  body { font-family: 'Arial', sans-serif; background: #f4f4f4; }
+  #game-area { width: 300px; margin: 50px auto; text-align: center; }
+  #wheel { width: 300px; height: 300px; border-radius: 50%; overflow: hidden; position: relative; }
+  .fruit-segment { position: absolute; width: 100%; height: 100%; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); transform-origin: center; }
+  #spin-button { margin: 20px 0; padding: 10px 20px; font-size: 18px; cursor: pointer; }
+  #challenge, #score { margin-top: 20px; }
+  #leaderboard { margin-top: 30px; }
+</style>
+</head>
+<body>
+
+<div id="game-area">
+  <div id="wheel"></div>
+  <button id="spin-button">Spin</button>
+  <div id="challenge"></div>
+  <div id="score">Score: <span>0</span></div>
+  <div id="leaderboard">Leaderboard coming soon...</div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+  const fruits = ['Apple', 'Banana', 'Orange', 'Grape', 'Golden Pineapple'];
+  const wheel = $('#wheel');
+  let currentRotation = 0;
+
+  // Populate wheel with fruits
+  fruits.forEach((fruit, index) => {
+    const segment = $('<div>', {class: 'fruit-segment', style: `background: ${getRandomColor()}; transform: rotate(${72 * index}deg)`});
+    wheel.append(segment);
+  });
+
+  function getRandomColor() {
+    return '#' + Math.floor(Math.random()*16777215).toString(16);
+  }
+
+  $('#spin-button').on('click', function() {
+    // Simple spinning logic - real randomness and stopping logic should be implemented
+    currentRotation += 360 * 5 + Math.floor(Math.random() * 360);
+    wheel.css('transform', `rotate(${currentRotation}deg)`);
+
+    // Determine fruit landed on (simplified)
+    let selectedFruitIndex = Math.floor((currentRotation % 360) / 72);
+    let selectedFruit = fruits[selectedFruitIndex];
+
+    // Display challenge or power-up
+    $('#challenge').text(`You landed on ${selectedFruit}! Challenge or power-up here.`);
+    // Here you would call a function to present the challenge or apply the power-up
+  });
+});
+</script>
+
+</body>
+</html>

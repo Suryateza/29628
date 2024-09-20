@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fruits Killer Spinner</title>
+ <style>body, html {
+    height: 100%;
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f0f0f0;
+}
+
+#game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#wheel-container {
+    position: relative;
+    width: 300px;
+    height: 300px;
+}
+
+#wheel {
+    width: 100%;
+    height: 100%;
+    background: conic-gradient(red, yellow, green, blue, purple, red);
+    border-radius: 50%;
+    border: 4px solid #fff;
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    transition: transform 5s ease-out;
+}
+
+#spin {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    padding: 10px 20px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+#challenge-display, #leaderboard {
+    margin-top: 20px;
+    text-align: center;
+}
+
+#challenge {
+    font-style: italic;
+}</style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="game-container">
+    <div id="wheel-container">
+        <div id="wheel"></div>
+        <button id="spin">Spin</button>
+    </div>
+    <div id="challenge-display">
+        <h2 id="fruit-display">Ready to Spin?</h2>
+        <div id="challenge"></div>
+        <div id="score">Score: <span id="current-score">0</span></div>
+    </div>
+    <div id="leaderboard">
+        <h3>Leaderboard</h3>
+        <!-- Leaderboard content will be dynamically updated -->
+    </div>
+</div>
+<script>$(document).ready(function() {
+    const wheel = $('#wheel');
+    const fruits = ['Apple', 'Banana', 'Orange', 'Grape', 'Pineapple', 'Strawberry'];
+    const challenges = {
+        'Apple': 'Answer a trivia question about apples.',
+        'Banana': 'Solve a math problem in 10 seconds.',
+        'Orange': 'Guess the fruit based on a riddle.',
+        'Grape': 'Perform a dance move.',
+        'Pineapple': 'Golden Pineapple! Double points next round!',
+        'Strawberry': 'Describe a fruit without naming it.'
+    };
+    let score = 0;
+    let canSpin = true;
+
+    $('#spin').on('click', function() {
+        if (!canSpin) return;
+        canSpin = false;
+        const spins = Math.floor(Math.random() * 5) + 3;
+        const randomDegree = 360 * spins + Math.floor(Math.random() * 360);
+        wheel.css({
+            'transform': `rotate(${randomDegree}deg)`
+        });
+
+        setTimeout(() => {
+            const stopAt = randomDegree % 360;
+            const fruitIndex = Math.floor(stopAt / (360 / fruits.length));
+            const currentFruit = fruits[fruitIndex];
+            $('#fruit-display').text(currentFruit);
+            $('#challenge').text(challenges[currentFruit]);
+            updateScore(currentFruit);
+            canSpin = true;
+        }, 5000); // Match with transition time in CSS
+    });
+
+    function updateScore(fruit) {
+        if (fruit === 'Pineapple') {
+            // Logic for power-up, for now just add points
+            score += 20;
+        } else {
+            score += 10; // Standard challenge points
+        }
+        $('#current-score').text(score);
+        // Here you would update the leaderboard, this is a placeholder:
+        $('#leaderboard').append(`<p>You: ${score}</p>`);
+    }
+});</script>
+</body>
+</html>
