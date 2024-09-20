@@ -4,91 +4,152 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fruits Killer Spinner</title>
-   <style>body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-}
-
-.container {
-    margin-top: 50px;
-}
-
-.wheel {
-    width: 300px;
-    height: 300px;
-    border-radius: 50%;
-    border: 10px solid #f39c12; /* Example color */
-    background-image: url('wheel.png'); /* Replace with your fruit wheel image */
-    background-size: cover;
-    transition: transform 4s ease-out;
-}
-
-button {
-    padding: 10px 20px;
-    font-size: 18px;
-    margin: 20px;
-}
-
-#challenge {
-    margin-top: 20px;
-    font-size: 20px;
-}
-
-#score {
-    font-size: 24px;
-    margin-top: 10px;
-}
-</style>
+    <style>body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        height: 100vh;
+        margin: 0;
+        background-color: #f9f9f9;
+    }
+    
+    .spinner-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    #spinner {
+        width: 300px;
+        height: 300px;
+        border-radius: 50%;
+        border: 5px solid #333;
+        position: relative;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .segment {
+        position: absolute;
+        width: 50%;
+        height: 50%;
+        transform-origin: 100% 100%;
+        text-align: center;
+        padding-top: 15px;
+        font-size: 18px;
+        font-weight: bold;
+        color: #333;
+        border: 1px solid #fff;
+        box-sizing: border-box;
+    }
+    
+    .segment:nth-child(1) { transform: rotate(0deg); }
+    .segment:nth-child(2) { transform: rotate(45deg); }
+    .segment:nth-child(3) { transform: rotate(90deg); }
+    .segment:nth-child(4) { transform: rotate(135deg); }
+    .segment:nth-child(5) { transform: rotate(180deg); }
+    .segment:nth-child(6) { transform: rotate(225deg); }
+    .segment:nth-child(7) { transform: rotate(270deg); }
+    .segment:nth-child(8) { transform: rotate(315deg); }
+    
+    #spinButton {
+        margin-top: 20px;
+        padding: 10px 20px;
+        font-size: 16px;
+        font-weight: bold;
+        color: white;
+        background-color: #333;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    
+    #spinButton:hover {
+        background-color: #555;
+    }
+    
+    .challenge-box {
+        margin-top: 20px;
+        font-size: 20px;
+        font-weight: bold;
+    }
+    
+    #score {
+        margin-top: 10px;
+        font-size: 18px;
+        font-weight: bold;
+    }
+    
+    #leaderboard {
+        margin-top: 10px;
+        font-size: 16px;
+    }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Fruits Killer Spinner</h1>
-        <div class="wheel" id="wheel">
-            <!-- Spin wheel segments -->
+    <div class="spinner-container">
+        <div id="spinner" class="spinner">
+            <div class="segment" style="background-color: #f4c542;">Banana 50</div>
+            <div class="segment" style="background-color: #9acd32;">Fig 20</div>
+            <div class="segment" style="background-color: #ffcc5c;">Gooseberry 30</div>
+            <div class="segment" style="background-color: #ff6f69;">Pineapple 10</div>
+            <div class="segment" style="background-color: #88d8b0;">Apple 10</div>
+            <div class="segment" style="background-color: #ffcc00;">Grapes 20</div>
+            <div class="segment" style="background-color: #ffaa00;">Mangoes 30</div>
+            <div class="segment" style="background-color: #f4a042;">Orange 40</div>
         </div>
-        <button id="spinButton">Spin</button>
-        <div id="challenge"></div>
+        <button id="spinButton">SPIN</button>
+        <div id="challenge" class="challenge-box"></div>
         <div id="score">Score: 0</div>
-        <div id="leaderboard">Leaderboard</div>
+        <div id="leaderboard">Leaderboard: <br> Coming Soon</div>
     </div>
-    <script> const spinButton = document.getElementById('spinButton');
-        const wheel = document.getElementById('wheel');
-        const challengeDisplay = document.getElementById('challenge');
-        const scoreDisplay = document.getElementById('score');
-        
+
+    <script>const spinner = document.getElementById('spinner');
+        const spinButton = document.getElementById('spinButton');
+        const challengeBox = document.getElementById('challenge');
+        const scoreBox = document.getElementById('score');
         let score = 0;
         
-        const challenges = {
-            apple: "Answer a trivia question about apples.",
-            banana: "Complete a quick math problem in under 10 seconds.",
-            cherry: "Perform a dance move using your webcam.",
-            grape: "Guess the fruit based on a riddle.",
-            goldenPineapple: "Double your points for this round!"
-        };
+        const fruits = [
+            { name: 'Banana', challenge: 'Solve this math problem: 12 + 8', points: 50, taskType: 'math' },
+            { name: 'Fig', challenge: 'Trivia: How many seeds does a fig have?', points: 20, taskType: 'trivia' },
+            { name: 'Gooseberry', challenge: 'Perform a dance move!', points: 30, taskType: 'task' },
+            { name: 'Pineapple', challenge: 'Golden Pineapple! Double your score!', points: 10, taskType: 'powerup' },
+            { name: 'Apple', challenge: 'Trivia: Where do apples originate from?', points: 10, taskType: 'trivia' },
+            { name: 'Grapes', challenge: 'Guess the fruit: "I grow in bunches and come in green or purple."', points: 20, taskType: 'riddle' },
+            { name: 'Mangoes', challenge: 'Complete this math problem in 10 seconds: 5 * 6', points: 30, taskType: 'math' },
+            { name: 'Orange', challenge: 'Trivia: Which vitamin is most common in oranges?', points: 40, taskType: 'trivia' }
+        ];
         
-        const spinWheel = () => {
-            const randomFruit = Object.keys(challenges)[Math.floor(Math.random() * Object.keys(challenges).length)];
-            const rotation = Math.floor(Math.random() * 360) + 720; // Spin at least two full rotations
-            wheel.style.transform = `rotate(${rotation}deg)`;
-            
-            // Challenge will be displayed after the spin ends
+        spinButton.addEventListener('click', () => {
+            const randomDeg = Math.floor(Math.random() * 3600) + 360; // Random degree for the spin
+            spinner.style.transition = 'transform 4s ease-out';
+            spinner.style.transform = `rotate(${randomDeg}deg)`;
+        
+            // Disable button while spinning
+            spinButton.disabled = true;
+        
             setTimeout(() => {
-                displayChallenge(randomFruit);
-            }, 4000); // Match this time with the CSS transition duration
-        };
+                // Determine the landed fruit
+                const index = Math.floor((randomDeg % 360) / 45);
+                const selectedFruit = fruits[index];
+                displayChallenge(selectedFruit);
+                // Re-enable button after spinning
+                spinButton.disabled = false;
+            }, 4000);
+        });
         
-        const displayChallenge = (fruit) => {
-            challengeDisplay.innerText = challenges[fruit];
-            // Here you can implement the logic for checking answers and scoring
-            if (fruit === 'goldenPineapple') {
-                score *= 2; // Double points
+        function displayChallenge(fruit) {
+            if (fruit.taskType === 'powerup') {
+                score *= 2;
+                challengeBox.innerHTML = `You landed on ${fruit.name}! ${fruit.challenge}`;
             } else {
-                score += 10; // Add points for completing a challenge
+                challengeBox.innerHTML = `You landed on ${fruit.name}! ${fruit.challenge}`;
+                score += fruit.points;
             }
-            scoreDisplay.innerText = `Score: ${score}`;
-        };
-        
-        spinButton.addEventListener('click', spinWheel);
+            scoreBox.innerHTML = `Score: ${score}`;
+        }
         </script>
 </body>
 </html>
