@@ -122,7 +122,6 @@
     <h1>Fruits Killer Spinner Game</h1>
     <div id="spinnerContainer">
         <div id="spinner">
-            <!-- Each div represents a segment -->
             <div class="segment" id="banana">Banana 50</div>
             <div class="segment" id="fig">Fig 20</div>
             <div class="segment" id="gooseberry">Gooseberry 30</div>
@@ -144,10 +143,10 @@
         const challengeBox = document.getElementById('challenge');
         const scoreBox = document.getElementById('score');
         const leaderboardBox = document.getElementById('leaderboard');
-        const segments = document.querySelectorAll('.segment');  // Get all the spinner segments
-        
+        const segments = document.querySelectorAll('.segment');
+
         let score = 0;
-        
+
         const fruits = [
             { name: 'Banana', challenge: 'Solve this math problem: 12 + 8', points: 50, taskType: 'math' },
             { name: 'Fig', challenge: 'Trivia: How many seeds does a fig have?', points: 20, taskType: 'trivia' },
@@ -158,57 +157,43 @@
             { name: 'Mangoes', challenge: 'Complete this math problem in 10 seconds: 5 * 6', points: 30, taskType: 'math' },
             { name: 'Orange', challenge: 'Trivia: Which vitamin is most common in oranges?', points: 40, taskType: 'trivia' }
         ];
-        
-        // Initial leaderboard update
-        updateLeaderboard();
-        
+
         spinButton.addEventListener('click', () => {
             const randomDeg = Math.floor(Math.random() * 3600) + 360; // Random degree for the spin
             spinner.style.transition = 'transform 4s ease-out';
             spinner.style.transform = `rotate(${randomDeg}deg)`;
-        
-            // Disable button while spinning
-            spinButton.disabled = true;
-        
+
+            spinButton.disabled = true; // Disable button while spinning
+
             setTimeout(() => {
-                // Re-enable button after spinning
-                spinButton.disabled = false;
-        
-                // Determine the landed fruit using modulus 360
+                spinButton.disabled = false; // Re-enable button after spinning
+
                 const normalizedDeg = randomDeg % 360;
                 const index = getFruitIndex(normalizedDeg);
                 const selectedFruit = fruits[index];
-        
-                // Highlight the selected segment
+
                 highlightSelectedSegment(index);
-        
-                // Display the challenge and handle points
                 displayChallenge(selectedFruit);
-        
+
             }, 4000);
         });
-        
-        // Function to map the angle to the fruit index
+
         function getFruitIndex(degree) {
-            if (degree >= 0 && degree < 45) return 7;      // Orange
-            if (degree >= 45 && degree < 90) return 6;     // Mangoes
-            if (degree >= 90 && degree < 135) return 5;    // Grapes
-            if (degree >= 135 && degree < 180) return 4;   // Apple
-            if (degree >= 180 && degree < 225) return 3;   // Pineapple
-            if (degree >= 225 && degree < 270) return 2;   // Gooseberry
-            if (degree >= 270 && degree < 315) return 1;   // Fig
-            if (degree >= 315 && degree < 360) return 0;   // Banana
+            if (degree >= 0 && degree < 45) return 7; // Orange
+            if (degree >= 45 && degree < 90) return 6; // Mangoes
+            if (degree >= 90 && degree < 135) return 5; // Grapes
+            if (degree >= 135 && degree < 180) return 4; // Apple
+            if (degree >= 180 && degree < 225) return 3; // Pineapple
+            if (degree >= 225 && degree < 270) return 2; // Gooseberry
+            if (degree >= 270 && degree < 315) return 1; // Fig
+            if (degree >= 315 && degree < 360) return 0; // Banana
         }
-        
-        // Function to highlight the selected fruit segment
+
         function highlightSelectedSegment(index) {
-            // Remove the highlight from any previously selected segment
             segments.forEach(segment => segment.classList.remove('selected'));
-        
-            // Add the highlight to the currently selected segment
             segments[index].classList.add('selected');
         }
-        
+
         function displayChallenge(fruit) {
             if (fruit.taskType === 'powerup') {
                 score *= 2;
@@ -221,16 +206,15 @@
             saveScore();
             updateLeaderboard();
         }
-        
+
         function saveScore() {
             let leaderboard = JSON.parse(localStorage.getItem('leaderboard')) || [];
             leaderboard.push(score);
-            // Sort leaderboard in descending order and keep the top 5 scores
-            leaderboard.sort((a, b) => b - a);
-            leaderboard = leaderboard.slice(0, 5);
+            leaderboard.sort((a, b) => b - a); // Sort leaderboard in descending order
+            leaderboard = leaderboard.slice(0, 5); // Keep only top 5 scores
             localStorage.setItem('leaderboard', JSON.stringify(leaderboard));
         }
-        
+
         function updateLeaderboard() {
             const leaderboard = JSON.parse(localStorage.getItem('leaderboard')) || [];
             leaderboardBox.innerHTML = 'Leaderboard:<br>';
