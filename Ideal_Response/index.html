@@ -51,7 +51,7 @@
         #mangoes { background-color: #FF9800; transform: rotate(270deg) skewY(-45deg); transform-origin: 100% 100%; }
         #orange { background-color: #FF5722; transform: rotate(315deg) skewY(-45deg); transform-origin: 100% 100%; }
 
-        #spinButton {
+        #spinButton, #resetButton {
             margin-top: 60px;
             padding: 10px 20px;
             font-size: 18px;
@@ -65,12 +65,8 @@
             font-size: 20px;
         }
 
-        #spinnerContainer {
-            margin-bottom: 40px;
-        }
-
         #leaderboard {
-            margin-top: 20px;
+            margin-top: 60px;
         }
     </style>
 </head>
@@ -88,6 +84,7 @@
             <div class="segment" id="orange">Orange 40</div>
         </div>
         <button id="spinButton">Spin</button>
+        <button id="resetButton">Reset</button> <!-- Reset button for restarting the game -->
     </div>
     <div id="challenge">Click "Spin" to start!</div>
     <div id="score">Score: 0</div>
@@ -96,6 +93,7 @@
     <script>
         const spinner = document.getElementById('spinner');
         const spinButton = document.getElementById('spinButton');
+        const resetButton = document.getElementById('resetButton');
         const challengeBox = document.getElementById('challenge');
         const scoreBox = document.getElementById('score');
         const leaderboardBox = document.getElementById('leaderboard');
@@ -107,7 +105,7 @@
             { name: 'Banana', challenge: 'Solve this math problem: 12 + 8', points: 50, taskType: 'math' },
             { name: 'Fig', challenge: 'Trivia: How many seeds does a fig have?', points: 20, taskType: 'trivia' },
             { name: 'Gooseberry', challenge: 'Perform a dance move!', points: 30, taskType: 'task' },
-            { name: 'Pineapple', challenge: 'Golden Pineapple! Double your score!', points: 10, taskType: 'powerup' },
+            { name: 'Pineapple', challenge: 'Golden Pineapple! Double your score and grant an extra spin!', points: 10, taskType: 'powerup' },
             { name: 'Apple', challenge: 'Trivia: Where do apples originate from?', points: 10, taskType: 'trivia' },
             { name: 'Grapes', challenge: 'Guess the fruit: "I grow in bunches and come in green or purple."', points: 20, taskType: 'riddle' },
             { name: 'Mangoes', challenge: 'Complete this math problem in 10 seconds: 5 * 6', points: 30, taskType: 'math' },
@@ -151,33 +149,31 @@
         }
 
         function displayChallenge(fruit) {
+            // Implement challenge handling logic here
             score = fruit.points; // Set score based only on the landed fruit
             if (fruit.taskType === 'powerup') {
                 score *= 2; // Double the score for powerup
                 challengeBox.innerHTML = `You landed on ${fruit.name}! ${fruit.challenge}`;
+                // Add logic for extra spins or challenge skipping here
             } else {
                 challengeBox.innerHTML = `You landed on ${fruit.name}! ${fruit.challenge}`;
             }
             scoreBox.innerHTML = `Score: ${score}`;
-            saveScore();
-            updateLeaderboard();
+            updateLeaderboard(fruit.name, score);
         }
 
-        function saveScore() {
-            let leaderboard = JSON.parse(localStorage.getItem('leaderboard')) || [];
-            leaderboard.push(score);
-            leaderboard.sort((a, b) => b - a); // Sort leaderboard in descending order
-            leaderboard = leaderboard.slice(0, 5); // Keep only top 5 scores
-            localStorage.setItem('leaderboard', JSON.stringify(leaderboard));
+        function updateLeaderboard(fruitName, currentScore) {
+            leaderboardBox.innerHTML += `${fruitName}: ${currentScore}<br>`;
         }
 
-        function updateLeaderboard() {
-            const leaderboard = JSON.parse(localStorage.getItem('leaderboard')) || [];
-            leaderboardBox.innerHTML = 'Leaderboard:<br>';
-            leaderboard.forEach((score, index) => {
-                leaderboardBox.innerHTML += `${index + 1}. ${score} points<br>`;
-            });
-        }
+        resetButton.addEventListener('click', () => {
+            score = 0; // Reset score
+            scoreBox.innerHTML = `Score: ${score}`;
+            challengeBox.innerHTML = `Click "Spin" to start!`;
+            leaderboardBox.innerHTML = `Leaderboard:<br>`; // Clear leaderboard
+            segments.forEach(segment => segment.classList.remove('selected'));
+            spinner.style.transform = 'rotate(0deg)'; // Reset spinner position
+        });
     </script>
 </body>
 </html>
